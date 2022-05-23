@@ -51,7 +51,7 @@ export default class PatientUpdate extends mixins(JhiDataUtils) {
         user: this.user,
         patient: this.patient
       })
-      this.$router.push('/admin/user-management');
+      this.$router.push('/patient');
       this.$root.$bvToast.toast('A Patient is created', {
         toaster: 'b-toaster-top-center',
         title: 'Success',

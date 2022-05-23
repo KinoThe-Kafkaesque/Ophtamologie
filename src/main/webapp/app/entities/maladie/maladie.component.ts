@@ -61,6 +61,7 @@ export default class Maladie extends Vue {
           this.alertService().showHttpError(this, err.response);
         }
       );
+    this.isFetching = false;
   }
 
   public retrieveAllMaladiesForPatient(): void {
