@@ -1,0 +1,115 @@
+entity Medecin   {
+    code String unique,
+	nom String,
+    numEmp String,
+    prenom String,
+    expertLevel Integer
+    photo ImageBlob,
+    type String,
+    nbrPatients Integer,
+    rating Integer,
+    description TextBlob,
+    }
+entity Secretaire   {
+   code String unique,
+	nom String,
+    numEmp String,
+    prenom String,
+	admin Boolean,
+    photo ImageBlob,
+    }
+
+entity Patient {
+	code String unique,
+	nom String,
+    prenom String,
+	dateNaissance LocalDate,
+    adresse String,
+    genre Genre,
+    telephone String,
+    poids Double,
+    taille Double
+    photo ImageBlob,
+}
+
+entity Detection {
+	photo ImageBlob,
+    code String unique,
+	validation Boolean,
+    stade String,
+    date ZonedDateTime,
+    description String
+
+}
+
+entity  RendezVous{
+	date ZonedDateTime,
+    code String unique,
+    status String
+}
+
+entity Visite {
+	code  String unique,
+    date LocalDate
+}
+
+entity Maladie {
+	code String unique,
+    nom  String unique,
+}
+
+entity Classification {
+	code String unique,
+	score Boolean
+}
+
+entity Image {
+	code String unique,
+	photo ImageBlob
+}
+
+entity Unclassified {
+	code String unique,
+	photo ImageBlob
+}
+entity Stade {
+	code String unique,
+	level String,
+   	description String
+}
+
+enum Genre {
+    Homme, Femme
+}
+
+relationship OneToOne {
+	Visite to RendezVous
+	Medecin{user} to User
+	Secretaire{user} to User
+	Patient{user} to User
+    Visite to Detection
+}
+
+relationship ManyToOne {
+    Detection to Maladie
+    Detection to Patient
+    Patient to Secretaire
+    Medecin to Secretaire
+    RendezVous to Patient
+    RendezVous to Medecin
+    Classification to Medecin
+    Classification to Stade
+    Classification to Unclassified
+    Image to Stade
+    Stade to Maladie
+    Unclassified to Maladie
+    
+}
+relationship ManyToMany {
+    Patient to Stade
+
+}
+
+
+
+
