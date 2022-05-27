@@ -65,6 +65,8 @@ spring:
         useServerPrepStmts: true
   jpa:
   rabbitmq:
+    # host: 0.tcp.eu.ngrok.io
+    # port: 1447
     host: b-709eef3a-fb78-408f-bf61-c4ce24bb71a5.mq.us-east-1.amazonaws.com
     port: 5671
     ssl:
