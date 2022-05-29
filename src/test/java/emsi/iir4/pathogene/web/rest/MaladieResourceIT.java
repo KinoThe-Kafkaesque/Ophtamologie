@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import emsi.iir4.pathogene.IntegrationTest;
 import emsi.iir4.pathogene.domain.Maladie;
 import emsi.iir4.pathogene.repository.MaladieRepository;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,8 +32,8 @@ class MaladieResourceIT {
     private static final String DEFAULT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final String DEFAULT_NOM = "AAAAAAAAAA";
+    private static final String UPDATED_NOM = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/maladies";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -61,7 +59,7 @@ class MaladieResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Maladie createEntity(EntityManager em) {
-        Maladie maladie = new Maladie().code(DEFAULT_CODE);
+        Maladie maladie = new Maladie().code(DEFAULT_CODE).nom(DEFAULT_NOM);
         return maladie;
     }
 
@@ -72,7 +70,7 @@ class MaladieResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Maladie createUpdatedEntity(EntityManager em) {
-        Maladie maladie = new Maladie().code(UPDATED_CODE);
+        Maladie maladie = new Maladie().code(UPDATED_CODE).nom(UPDATED_NOM);
         return maladie;
     }
 
@@ -95,6 +93,7 @@ class MaladieResourceIT {
         assertThat(maladieList).hasSize(databaseSizeBeforeCreate + 1);
         Maladie testMaladie = maladieList.get(maladieList.size() - 1);
         assertThat(testMaladie.getCode()).isEqualTo(DEFAULT_CODE);
+        assertThat(testMaladie.getNom()).isEqualTo(DEFAULT_NOM);
     }
 
     @Test
@@ -128,7 +127,7 @@ class MaladieResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(maladie.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
+            .andExpect(jsonPath("$.[*].nom").value(hasItem(DEFAULT_NOM)));
     }
 
     @Test
@@ -144,7 +143,7 @@ class MaladieResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(maladie.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
+            .andExpect(jsonPath("$.nom").value(DEFAULT_NOM));
     }
 
     @Test
@@ -166,7 +165,7 @@ class MaladieResourceIT {
         Maladie updatedMaladie = maladieRepository.findById(maladie.getId()).get();
         // Disconnect from session so that the updates on updatedMaladie are not directly saved in db
         em.detach(updatedMaladie);
-        updatedMaladie.code(UPDATED_CODE);
+        updatedMaladie.code(UPDATED_CODE).nom(UPDATED_NOM);
 
         restMaladieMockMvc
             .perform(
@@ -181,6 +180,7 @@ class MaladieResourceIT {
         assertThat(maladieList).hasSize(databaseSizeBeforeUpdate);
         Maladie testMaladie = maladieList.get(maladieList.size() - 1);
         assertThat(testMaladie.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testMaladie.getNom()).isEqualTo(UPDATED_NOM);
     }
 
     @Test
@@ -264,6 +264,7 @@ class MaladieResourceIT {
         assertThat(maladieList).hasSize(databaseSizeBeforeUpdate);
         Maladie testMaladie = maladieList.get(maladieList.size() - 1);
         assertThat(testMaladie.getCode()).isEqualTo(DEFAULT_CODE);
+        assertThat(testMaladie.getNom()).isEqualTo(DEFAULT_NOM);
     }
 
     @Test
@@ -278,7 +279,7 @@ class MaladieResourceIT {
         Maladie partialUpdatedMaladie = new Maladie();
         partialUpdatedMaladie.setId(maladie.getId());
 
-        partialUpdatedMaladie.code(UPDATED_CODE);
+        partialUpdatedMaladie.code(UPDATED_CODE).nom(UPDATED_NOM);
 
         restMaladieMockMvc
             .perform(
@@ -293,6 +294,7 @@ class MaladieResourceIT {
         assertThat(maladieList).hasSize(databaseSizeBeforeUpdate);
         Maladie testMaladie = maladieList.get(maladieList.size() - 1);
         assertThat(testMaladie.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testMaladie.getNom()).isEqualTo(UPDATED_NOM);
     }
 
     @Test

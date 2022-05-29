@@ -2,6 +2,7 @@ package emsi.iir4.pathogene.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import emsi.iir4.pathogene.domain.enumeration.Genre;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -64,21 +65,28 @@ public class Patient implements Serializable {
     @JoinColumn(unique = true)
     private User user;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "patients", "medecins" }, allowSetters = true)
-    private Secretaire secretaire;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "patients", "classifications", "images" }, allowSetters = true)
-    private Stade stade;
-
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Set<Detection> detections = new HashSet<>();
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<RendezVous> rendezVous = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_patient__detection",
+        joinColumns = @JoinColumn(name = "patient_id"),
+        inverseJoinColumns = @JoinColumn(name = "detection_id")
+    )
+    @JsonIgnoreProperties(value = { "maladies", "visite", "patients" }, allowSetters = true)
+    private Set<Detection> detections = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "user", "medecins", "patients" }, allowSetters = true)
+    private Secretaire secretaire;
+
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "patients", "classifications", "images" }, allowSetters = true)
+    private Stade stade;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -248,65 +256,6 @@ public class Patient implements Serializable {
 
     public Patient user(User user) {
         this.setUser(user);
-        this.setNom(user.getLastName());
-        this.setPrenom(user.getFirstName());
-        return this;
-    }
-
-    public Secretaire getSecretaire() {
-        return this.secretaire;
-    }
-
-    public void setSecretaire(Secretaire secretaire) {
-        this.secretaire = secretaire;
-    }
-
-    public Patient secretaire(Secretaire secretaire) {
-        this.setSecretaire(secretaire);
-        return this;
-    }
-
-    public Stade getStade() {
-        return this.stade;
-    }
-
-    public void setStade(Stade stade) {
-        this.stade = stade;
-    }
-
-    public Patient stade(Stade stade) {
-        this.setStade(stade);
-        return this;
-    }
-
-    public Set<Detection> getDetections() {
-        return this.detections;
-    }
-
-    public void setDetections(Set<Detection> detections) {
-        if (this.detections != null) {
-            this.detections.forEach(i -> i.setPatient(null));
-        }
-        if (detections != null) {
-            detections.forEach(i -> i.setPatient(this));
-        }
-        this.detections = detections;
-    }
-
-    public Patient detections(Set<Detection> detections) {
-        this.setDetections(detections);
-        return this;
-    }
-
-    public Patient addDetection(Detection detection) {
-        this.detections.add(detection);
-        detection.setPatient(this);
-        return this;
-    }
-
-    public Patient removeDetection(Detection detection) {
-        this.detections.remove(detection);
-        detection.setPatient(null);
         return this;
     }
 
@@ -338,6 +287,57 @@ public class Patient implements Serializable {
     public Patient removeRendezVous(RendezVous rendezVous) {
         this.rendezVous.remove(rendezVous);
         rendezVous.setPatient(null);
+        return this;
+    }
+
+    public Set<Detection> getDetections() {
+        return this.detections;
+    }
+
+    public void setDetections(Set<Detection> detections) {
+        this.detections = detections;
+    }
+
+    public Patient detections(Set<Detection> detections) {
+        this.setDetections(detections);
+        return this;
+    }
+
+    public Patient addDetection(Detection detection) {
+        this.detections.add(detection);
+        detection.getPatients().add(this);
+        return this;
+    }
+
+    public Patient removeDetection(Detection detection) {
+        this.detections.remove(detection);
+        detection.getPatients().remove(this);
+        return this;
+    }
+
+    public Secretaire getSecretaire() {
+        return this.secretaire;
+    }
+
+    public void setSecretaire(Secretaire secretaire) {
+        this.secretaire = secretaire;
+    }
+
+    public Patient secretaire(Secretaire secretaire) {
+        this.setSecretaire(secretaire);
+        return this;
+    }
+
+    public Stade getStade() {
+        return this.stade;
+    }
+
+    public void setStade(Stade stade) {
+        this.stade = stade;
+    }
+
+    public Patient stade(Stade stade) {
+        this.setStade(stade);
         return this;
     }
 

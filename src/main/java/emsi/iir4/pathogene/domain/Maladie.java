@@ -2,6 +2,7 @@ package emsi.iir4.pathogene.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,17 +29,17 @@ public class Maladie implements Serializable {
     @Column(name = "nom", unique = true)
     private String nom;
 
-    @JsonIgnoreProperties(value = { "maladie", "patient", "visite" }, allowSetters = true)
-    @OneToOne(mappedBy = "maladie")
-    private Detection detection;
-
     @OneToMany(mappedBy = "maladie", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<Stade> stades = new HashSet<>();
 
     @OneToMany(mappedBy = "maladie")
-    @JsonIgnoreProperties(value = { "maladie", "classifications" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "classifications", "maladie" }, allowSetters = true)
     private Set<Unclassified> unclassifieds = new HashSet<>();
+
+    @ManyToMany(mappedBy = "maladies")
+    @JsonIgnoreProperties(value = { "maladies", "visite", "patients" }, allowSetters = true)
+    private Set<Detection> detections = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -79,25 +80,6 @@ public class Maladie implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public Detection getDetection() {
-        return this.detection;
-    }
-
-    public void setDetection(Detection detection) {
-        if (this.detection != null) {
-            this.detection.setMaladie(null);
-        }
-        if (detection != null) {
-            detection.setMaladie(this);
-        }
-        this.detection = detection;
-    }
-
-    public Maladie detection(Detection detection) {
-        this.setDetection(detection);
-        return this;
     }
 
     public Set<Stade> getStades() {
@@ -159,6 +141,37 @@ public class Maladie implements Serializable {
     public Maladie removeUnclassified(Unclassified unclassified) {
         this.unclassifieds.remove(unclassified);
         unclassified.setMaladie(null);
+        return this;
+    }
+
+    public Set<Detection> getDetections() {
+        return this.detections;
+    }
+
+    public void setDetections(Set<Detection> detections) {
+        if (this.detections != null) {
+            this.detections.forEach(i -> i.removeMaladie(this));
+        }
+        if (detections != null) {
+            detections.forEach(i -> i.addMaladie(this));
+        }
+        this.detections = detections;
+    }
+
+    public Maladie detections(Set<Detection> detections) {
+        this.setDetections(detections);
+        return this;
+    }
+
+    public Maladie addDetection(Detection detection) {
+        this.detections.add(detection);
+        detection.getMaladies().add(this);
+        return this;
+    }
+
+    public Maladie removeDetection(Detection detection) {
+        this.detections.remove(detection);
+        detection.getMaladies().remove(this);
         return this;
     }
 

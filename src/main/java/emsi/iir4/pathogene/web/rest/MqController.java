@@ -24,8 +24,10 @@ public class MqController {
         System.out.println(" [x] Requesting classification.....");
         System.out.println("from :" + exchange.getName());
         byte[] response;
-        if (name.equals("brain Cancer")) response = (byte[]) template.convertSendAndReceive("", "rpc_brain", photo); else response =
-            (byte[]) template.convertSendAndReceive("", "rpc_retino", photo);
+        if (name.equals("brain Cancer"))
+            response = (byte[]) template.convertSendAndReceive("", "rpc_brain", photo);
+        else
+            response = (byte[]) template.convertSendAndReceive("", "rpc_retino", photo);
 
         String oracle = new String(response);
         System.out.println("[x]" + oracle);
