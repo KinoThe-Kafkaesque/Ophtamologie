@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="Nyanpasu (generated)" id="1653822647427-1">
+        <addColumn tableName="detection">
+            <column name="patient_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nyanpasu (generated)" id="1653822647427-2">
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="detection" constraintName="FKpoo05vsax3c3mw1pfcicedsdn" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="patient" validate="true"/>
+    </changeSet>
+    <changeSet author="Nyanpasu (generated)" id="1653822647427-3">
+        <dropForeignKeyConstraint baseTableName="rel_patient__detection" constraintName="FKqe80a9f7a7aettomyalsooimi"/>
+    </changeSet>
+    <changeSet author="Nyanpasu (generated)" id="1653822647427-4">
+        <dropForeignKeyConstraint baseTableName="rel_patient__detection" constraintName="FKqixk2707mnxbtjq6xslsnt2bq"/>
+    </changeSet>
+    <changeSet author="Nyanpasu (generated)" id="1653822647427-6">
+        <dropTable tableName="rel_patient__detection"/>
+    </changeSet>
+    <changeSet author="Nyanpasu (generated)" id="1653822647427-7">
+        <dropColumn columnName="detection_id" tableName="patient"/>
+    </changeSet>
+</databaseChangeLog>

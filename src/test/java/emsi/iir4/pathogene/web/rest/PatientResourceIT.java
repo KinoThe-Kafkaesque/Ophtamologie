@@ -108,7 +108,6 @@ class PatientResourceIT {
             .adresse(DEFAULT_ADRESSE)
             .genre(DEFAULT_GENRE)
             .telephone(DEFAULT_TELEPHONE)
-            .poids(DEFAULT_POIDS)
             .taille(DEFAULT_TAILLE)
             .photo(DEFAULT_PHOTO)
             .photoContentType(DEFAULT_PHOTO_CONTENT_TYPE);
@@ -130,7 +129,6 @@ class PatientResourceIT {
             .adresse(UPDATED_ADRESSE)
             .genre(UPDATED_GENRE)
             .telephone(UPDATED_TELEPHONE)
-            .poids(UPDATED_POIDS)
             .taille(UPDATED_TAILLE)
             .photo(UPDATED_PHOTO)
             .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
@@ -162,7 +160,6 @@ class PatientResourceIT {
         assertThat(testPatient.getAdresse()).isEqualTo(DEFAULT_ADRESSE);
         assertThat(testPatient.getGenre()).isEqualTo(DEFAULT_GENRE);
         assertThat(testPatient.getTelephone()).isEqualTo(DEFAULT_TELEPHONE);
-        assertThat(testPatient.getPoids()).isEqualTo(DEFAULT_POIDS);
         assertThat(testPatient.getTaille()).isEqualTo(DEFAULT_TAILLE);
         assertThat(testPatient.getPhoto()).isEqualTo(DEFAULT_PHOTO);
         assertThat(testPatient.getPhotoContentType()).isEqualTo(DEFAULT_PHOTO_CONTENT_TYPE);
@@ -281,7 +278,6 @@ class PatientResourceIT {
             .adresse(UPDATED_ADRESSE)
             .genre(UPDATED_GENRE)
             .telephone(UPDATED_TELEPHONE)
-            .poids(UPDATED_POIDS)
             .taille(UPDATED_TAILLE)
             .photo(UPDATED_PHOTO)
             .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
@@ -305,7 +301,6 @@ class PatientResourceIT {
         assertThat(testPatient.getAdresse()).isEqualTo(UPDATED_ADRESSE);
         assertThat(testPatient.getGenre()).isEqualTo(UPDATED_GENRE);
         assertThat(testPatient.getTelephone()).isEqualTo(UPDATED_TELEPHONE);
-        assertThat(testPatient.getPoids()).isEqualTo(UPDATED_POIDS);
         assertThat(testPatient.getTaille()).isEqualTo(UPDATED_TAILLE);
         assertThat(testPatient.getPhoto()).isEqualTo(UPDATED_PHOTO);
         assertThat(testPatient.getPhotoContentType()).isEqualTo(UPDATED_PHOTO_CONTENT_TYPE);
@@ -405,7 +400,6 @@ class PatientResourceIT {
         assertThat(testPatient.getAdresse()).isEqualTo(DEFAULT_ADRESSE);
         assertThat(testPatient.getGenre()).isEqualTo(UPDATED_GENRE);
         assertThat(testPatient.getTelephone()).isEqualTo(DEFAULT_TELEPHONE);
-        assertThat(testPatient.getPoids()).isEqualTo(DEFAULT_POIDS);
         assertThat(testPatient.getTaille()).isEqualTo(DEFAULT_TAILLE);
         assertThat(testPatient.getPhoto()).isEqualTo(DEFAULT_PHOTO);
         assertThat(testPatient.getPhotoContentType()).isEqualTo(DEFAULT_PHOTO_CONTENT_TYPE);
@@ -431,7 +425,6 @@ class PatientResourceIT {
             .adresse(UPDATED_ADRESSE)
             .genre(UPDATED_GENRE)
             .telephone(UPDATED_TELEPHONE)
-            .poids(UPDATED_POIDS)
             .taille(UPDATED_TAILLE)
             .photo(UPDATED_PHOTO)
             .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
@@ -455,7 +448,6 @@ class PatientResourceIT {
         assertThat(testPatient.getAdresse()).isEqualTo(UPDATED_ADRESSE);
         assertThat(testPatient.getGenre()).isEqualTo(UPDATED_GENRE);
         assertThat(testPatient.getTelephone()).isEqualTo(UPDATED_TELEPHONE);
-        assertThat(testPatient.getPoids()).isEqualTo(UPDATED_POIDS);
         assertThat(testPatient.getTaille()).isEqualTo(UPDATED_TAILLE);
         assertThat(testPatient.getPhoto()).isEqualTo(UPDATED_PHOTO);
         assertThat(testPatient.getPhotoContentType()).isEqualTo(UPDATED_PHOTO_CONTENT_TYPE);

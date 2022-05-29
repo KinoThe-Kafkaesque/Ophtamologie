@@ -120,11 +120,9 @@ export default class MedecinPatients extends mixins(JhiDataUtils) {
     this.detection.patient = this.patient;
     this.maladie = await this.maladieService().find(this.idMaladie);
     this.detection.maladie = this.maladie;
-    let response = await this.detectionService().create(this.detection);
+    const response = await this.detectionService().create(this.detection);
     this.detection = response;
-    this.visite = await this.visiteService().find(this.idVisite);
-    this.visite.detection = this.detection;
-    await this.visiteService().update(this.visite);
+
     this.$root.$bvToast.toast("A detection is created", {
       toaster: 'b-toaster-top-center',
       title: 'Info',
@@ -136,6 +134,9 @@ export default class MedecinPatients extends mixins(JhiDataUtils) {
     if (<any>this.$refs.afficheEntity) {
       (<any>this.$refs.afficheEntity).show();
     }
+    this.visite = await this.visiteService().find(this.idVisite);
+    this.visite.detection = this.detection;
+   await this.visiteService().update(this.visite);
   }
 
   public async saveStade(instance: IStade){
