@@ -207,7 +207,7 @@ public class DetectionResource {
                 .collect(Collectors.toList());
         }
         log.debug("REST request to get all Detections");
-        return detectionRepository.findAllWithEagerRelationships();
+        return detectionRepository.findAll();
     }
 
     /**
@@ -219,7 +219,7 @@ public class DetectionResource {
     @GetMapping("/detections/{id}")
     public ResponseEntity<Detection> getDetection(@PathVariable Long id) {
         log.debug("REST request to get Detection : {}", id);
-        Optional<Detection> detection = detectionRepository.findOneWithEagerRelationships(id);
+        Optional<Detection> detection = detectionRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(detection);
     }
 

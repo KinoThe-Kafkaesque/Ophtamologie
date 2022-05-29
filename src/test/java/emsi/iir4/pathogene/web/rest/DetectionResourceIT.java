@@ -185,23 +185,7 @@ class DetectionResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
-    @SuppressWarnings({ "unchecked" })
-    void getAllDetectionsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(detectionRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
-        restDetectionMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(detectionRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllDetectionsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(detectionRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restDetectionMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(detectionRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
 
     @Test
     @Transactional

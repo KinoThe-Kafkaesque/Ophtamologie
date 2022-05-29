@@ -1,5 +1,5 @@
 {
-  "applications": "*",
+  "applications": ["pathogene"],
   "changelogDate": "20220414225001",
   "dto": "no",
   "embedded": false,
@@ -24,6 +24,12 @@
   "readOnly": false,
   "relationships": [
     {
+      "otherEntityName": "detection",
+      "otherEntityRelationshipName": "maladie",
+      "relationshipName": "detection",
+      "relationshipType": "one-to-many"
+    },
+    {
       "otherEntityName": "stade",
       "otherEntityRelationshipName": "maladie",
       "relationshipName": "stade",
@@ -34,14 +40,9 @@
       "otherEntityRelationshipName": "maladie",
       "relationshipName": "unclassified",
       "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "detection",
-      "otherEntityRelationshipName": "maladie",
-      "relationshipName": "detection",
-      "relationshipType": "one-to-many"
     }
   ],
   "service": "no",
-  "skipClient": true
+
+  "skipServer": true
 }

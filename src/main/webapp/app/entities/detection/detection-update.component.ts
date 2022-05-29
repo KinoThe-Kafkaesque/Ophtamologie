@@ -8,14 +8,14 @@ import { DATE_TIME_LONG_FORMAT } from '@/shared/date/filters';
 
 import AlertService from '@/shared/alert/alert.service';
 
+import VisiteService from '@/entities/visite/visite.service';
+import { IVisite } from '@/shared/model/visite.model';
+
 import MaladieService from '@/entities/maladie/maladie.service';
 import { IMaladie } from '@/shared/model/maladie.model';
 
 import PatientService from '@/entities/patient/patient.service';
 import { IPatient } from '@/shared/model/patient.model';
-
-import VisiteService from '@/entities/visite/visite.service';
-import { IVisite } from '@/shared/model/visite.model';
 
 import { IDetection, Detection } from '@/shared/model/detection.model';
 import DetectionService from './detection.service';
@@ -25,6 +25,7 @@ const validations: any = {
     photo: {},
     code: {},
     validation: {},
+    stade: {},
     date: {},
     description: {},
   },
@@ -39,6 +40,10 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
 
   public detection: IDetection = new Detection();
 
+  @Inject('visiteService') private visiteService: () => VisiteService;
+
+  public visites: IVisite[] = [];
+
   @Inject('maladieService') private maladieService: () => MaladieService;
 
   public maladies: IMaladie[] = [];
@@ -46,10 +51,6 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
   @Inject('patientService') private patientService: () => PatientService;
 
   public patients: IPatient[] = [];
-
-  @Inject('visiteService') private visiteService: () => VisiteService;
-
-  public visites: IVisite[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -80,7 +81,7 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = 'A Detection is updated';
+          const message = 'A Detection is updated with identifier ' + param.id;
           return this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Info',
@@ -103,6 +104,7 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
           if (<any>this.$refs.afficheEntity) {
             (<any>this.$refs.afficheEntity).show();
           }
+
         })
         .catch(error => {
           this.isSaving = false;
@@ -165,6 +167,11 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
   }
 
   public initRelationships(): void {
+    this.visiteService()
+      .retrieve()
+      .then(res => {
+        this.visites = res.data;
+      });
     this.maladieService()
       .retrieve()
       .then(res => {
@@ -174,11 +181,6 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
       .retrieve()
       .then(res => {
         this.patients = res.data;
-      });
-    this.visiteService()
-      .retrieve()
-      .then(res => {
-        this.visites = res.data;
       });
   }
 

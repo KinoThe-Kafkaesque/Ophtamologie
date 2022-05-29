@@ -36,10 +36,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "poids",
-      "fieldType": "Double"
-    },
-    {
       "fieldName": "taille",
       "fieldType": "Double"
     },
@@ -90,5 +86,6 @@
     }
   ],
   "service": "no",
-  "skipClient": true
+
+  "skipServer": true
 }

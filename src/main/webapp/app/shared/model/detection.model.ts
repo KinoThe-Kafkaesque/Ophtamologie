@@ -1,6 +1,6 @@
+import { IVisite } from '@/shared/model/visite.model';
 import { IMaladie } from '@/shared/model/maladie.model';
 import { IPatient } from '@/shared/model/patient.model';
-import { IVisite } from '@/shared/model/visite.model';
 
 export interface IDetection {
   id?: number;
@@ -11,9 +11,9 @@ export interface IDetection {
   stade?: string | null;
   date?: Date | null;
   description?: string | null;
-  maladie?: IMaladie | null;
-  patient?: IPatient | null;
   visite?: IVisite | null;
+  maladie?: IMaladie | null;
+  patients?: IPatient[] | null;
 }
 
 export class Detection implements IDetection {
@@ -26,9 +26,9 @@ export class Detection implements IDetection {
     public stade?: string | null,
     public date?: Date | null,
     public description?: string | null,
+    public visite?: IVisite | null,
     public maladie?: IMaladie | null,
-    public patient?: IPatient | null,
-    public visite?: IVisite | null
+    public patients?: IPatient[] | null
   ) {
     this.validation = this.validation ?? false;
   }

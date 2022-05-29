@@ -7,17 +7,18 @@ import AlertService from '@/shared/alert/alert.service';
 
 import UserService from '@/entities/user/user.service';
 
-import SecretaireService from '@/entities/secretaire/secretaire.service';
-import { ISecretaire } from '@/shared/model/secretaire.model';
-
+import RendezVousService from '@/entities/rendez-vous/rendez-vous.service';
+import { IRendezVous } from '@/shared/model/rendez-vous.model';
 import MaladieService from '@/entities/maladie/maladie.service';
 import { IMaladie } from '@/shared/model/maladie.model';
-
 import DetectionService from '@/entities/detection/detection.service';
 import { IDetection } from '@/shared/model/detection.model';
 
-import RendezVousService from '@/entities/rendez-vous/rendez-vous.service';
-import { IRendezVous } from '@/shared/model/rendez-vous.model';
+import SecretaireService from '@/entities/secretaire/secretaire.service';
+import { ISecretaire } from '@/shared/model/secretaire.model';
+
+import StadeService from '@/entities/stade/stade.service';
+import { IStade } from '@/shared/model/stade.model';
 
 import { IPatient, Patient } from '@/shared/model/patient.model';
 import PatientService from './patient.service';
@@ -25,6 +26,7 @@ import { Genre } from '@/shared/model/enumerations/genre.model';
 
 const validations: any = {
   patient: {
+    code: {},
     nom: {},
     prenom: {},
     dateNaissance: {},
@@ -50,10 +52,9 @@ export default class PatientUpdate extends mixins(JhiDataUtils) {
 
   public users: Array<any> = [];
 
-  @Inject('secretaireService') private secretaireService: () => SecretaireService;
+  @Inject('rendezVousService') private rendezVousService: () => RendezVousService;
 
-  public secretaires: ISecretaire[] = [];
-
+  public rendezVous: IRendezVous[] = [];
   @Inject('maladieService') private maladieService: () => MaladieService;
 
   public maladies: IMaladie[] = [];
@@ -62,9 +63,13 @@ export default class PatientUpdate extends mixins(JhiDataUtils) {
 
   public detections: IDetection[] = [];
 
-  @Inject('rendezVousService') private rendezVousService: () => RendezVousService;
+  @Inject('secretaireService') private secretaireService: () => SecretaireService;
 
-  public rendezVous: IRendezVous[] = [];
+  public secretaires: ISecretaire[] = [];
+
+  @Inject('stadeService') private stadeService: () => StadeService;
+
+  public stades: IStade[] = [];
   public genreValues: string[] = Object.keys(Genre);
   public isSaving = false;
   public currentLanguage = '';
@@ -86,6 +91,7 @@ export default class PatientUpdate extends mixins(JhiDataUtils) {
         this.currentLanguage = this.$store.getters.currentLanguage;
       }
     );
+    this.patient.detections = [];
   }
 
   public save(): void {
@@ -110,7 +116,7 @@ export default class PatientUpdate extends mixins(JhiDataUtils) {
           this.alertService().showHttpError(this, error.response);
         });
     } else {
-      let user = JSON.parse(sessionStorage.getItem('user-info'));
+      const user = JSON.parse(sessionStorage.getItem('user-info'));
       this.patient.secretaire = user;
       this.patientService()
         .create(this.patient)
@@ -168,25 +174,32 @@ export default class PatientUpdate extends mixins(JhiDataUtils) {
       .then(res => {
         this.users = res.data;
       });
-    this.secretaireService()
+    this.rendezVousService()
       .retrieve()
       .then(res => {
-        this.secretaires = res.data;
-      });
-    this.maladieService()
-      .retrieve()
-      .then(res => {
-        this.maladies = res.data;
+        this.rendezVous = res.data;
       });
     this.detectionService()
       .retrieve()
       .then(res => {
         this.detections = res.data;
       });
-    this.rendezVousService()
+    this.secretaireService()
       .retrieve()
       .then(res => {
-        this.rendezVous = res.data;
+        this.secretaires = res.data;
       });
+    this.stadeService()
+      .retrieve()
+      .then(res => {
+        this.stades = res.data;
+      });
+  }
+
+  public getSelected(selectedVals, option): any {
+    if (selectedVals) {
+      return selectedVals.find(value => option.id === value.id) ?? option;
+    }
+    return option;
   }
 }

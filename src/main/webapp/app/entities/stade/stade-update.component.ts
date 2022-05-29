@@ -2,14 +2,17 @@ import { Component, Vue, Inject } from 'vue-property-decorator';
 
 import AlertService from '@/shared/alert/alert.service';
 
-import MaladieService from '@/entities/maladie/maladie.service';
-import { IMaladie } from '@/shared/model/maladie.model';
-
 import ClassificationService from '@/entities/classification/classification.service';
 import { IClassification } from '@/shared/model/classification.model';
 
 import ImageService from '@/entities/image/image.service';
 import { IImage } from '@/shared/model/image.model';
+
+import PatientService from '@/entities/patient/patient.service';
+import { IPatient } from '@/shared/model/patient.model';
+
+import MaladieService from '@/entities/maladie/maladie.service';
+import { IMaladie } from '@/shared/model/maladie.model';
 
 import { IStade, Stade } from '@/shared/model/stade.model';
 import StadeService from './stade.service';
@@ -31,10 +34,6 @@ export default class StadeUpdate extends Vue {
 
   public stade: IStade = new Stade();
 
-  @Inject('maladieService') private maladieService: () => MaladieService;
-
-  public maladies: IMaladie[] = [];
-
   @Inject('classificationService') private classificationService: () => ClassificationService;
 
   public classifications: IClassification[] = [];
@@ -42,6 +41,14 @@ export default class StadeUpdate extends Vue {
   @Inject('imageService') private imageService: () => ImageService;
 
   public images: IImage[] = [];
+
+  @Inject('patientService') private patientService: () => PatientService;
+
+  public patients: IPatient[] = [];
+
+  @Inject('maladieService') private maladieService: () => MaladieService;
+
+  public maladies: IMaladie[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -72,7 +79,7 @@ export default class StadeUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = 'A Stade is updated';
+          const message = 'A Stade is updated with identifier ' + param.id;
           return this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Info',
@@ -91,7 +98,7 @@ export default class StadeUpdate extends Vue {
         .then(param => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = 'A Stade is created';
+          const message = 'A Stade is created with identifier ' + param.id;
           this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Success',
@@ -123,11 +130,6 @@ export default class StadeUpdate extends Vue {
   }
 
   public initRelationships(): void {
-    this.maladieService()
-      .retrieve()
-      .then(res => {
-        this.maladies = res.data;
-      });
     this.classificationService()
       .retrieve()
       .then(res => {
@@ -137,6 +139,16 @@ export default class StadeUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.images = res.data;
+      });
+    this.patientService()
+      .retrieve()
+      .then(res => {
+        this.patients = res.data;
+      });
+    this.maladieService()
+      .retrieve()
+      .then(res => {
+        this.maladies = res.data;
       });
   }
 }

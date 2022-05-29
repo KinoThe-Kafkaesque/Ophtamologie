@@ -1,8 +1,53 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType jwt
+    baseName pathogene
+    blueprints []
+    buildTool maven
+    cacheProvider no
+    clientFramework vue
+    clientPackageManager npm
+    clientTheme lux
+    clientThemeVariant dark
+    creationTimestamp 1649976249917
+    databaseType sql
+    devDatabaseType mysql
+    dtoSuffix DTO
+    enableGradleEnterprise false
+    enableHibernateCache false
+    enableSwaggerCodegen false
+    enableTranslation false
+    gradleEnterpriseHost ""
+    jhiPrefix jhi
+    jhipsterVersion "7.8.1"
+    jwtSecretKey "N2EwNDVhNzA1NGExZDY0ZjcyY2ZiNDQyZjc0ZjMwYWRjY2Q4YzllMWQzNjExYThhOTBjNWNjYTAzZTc1ZjRjODM0YTE5NTM5ZjVmZjU1ODdiOWI0MTRkZGJlY2IxYTg2N2RlNmQ5ZjE1MDI0NmMzNDZlMTZhNjg0OWI3MDY2NmQ="
+    languages [en, fr]
+    messageBroker false
+    nativeLanguage fr
+    otherModules []
+    packageName emsi.iir4.pathogene
+    prodDatabaseType mysql
+    reactive false
+    searchEngine false
+    serverPort 8080
+    serviceDiscoveryType eureka
+    skipClient false
+    skipServer true
+    skipUserManagement false
+    testFrameworks []
+    websocket false
+    withAdminUi true
+  }
+
+  entities Classification, Compte, Detection, Image, Maladie, Medecin, Patient, RendezVous, Secretaire, Stade, Unclassified, Visite
+}
 
 entity Classification {
   code String unique
   score Boolean
 }
+entity Compte
 entity Detection {
   photo ImageBlob
   code String unique
@@ -39,7 +84,6 @@ entity Patient {
   adresse String
   genre Genre
   telephone String
-  poids Double
   taille Double
   photo ImageBlob
 }
@@ -75,6 +119,7 @@ enum Genre {
 }
 
 relationship OneToOne {
+  Compte{user} to User
   Medecin{user} to User
   Patient{user} to User
   Secretaire{user} to User
@@ -85,6 +130,7 @@ relationship OneToMany {
   Medecin{classification} to Classification{medecin}
   Stade{classification} to Classification{stade}
   Unclassified{classification} to Classification{unclassified}
+  Maladie{detection} to Detection{maladie}
   Stade{image} to Image{stade}
   Secretaire{medecin} to Medecin{secretaire}
   Secretaire{patient} to Patient{secretaire}
@@ -93,9 +139,8 @@ relationship OneToMany {
   Medecin{rendezVous} to RendezVous{medecin}
   Maladie{stade} to Stade{maladie}
   Maladie{unclassified} to Unclassified{maladie}
-  Maladie{detection} to  Detection{maladie}
-
 }
 relationship ManyToMany {
   Patient{detection} to Detection{patient}
 }
+
