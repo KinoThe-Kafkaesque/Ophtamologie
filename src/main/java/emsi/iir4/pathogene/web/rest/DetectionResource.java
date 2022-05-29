@@ -1,7 +1,6 @@
 package emsi.iir4.pathogene.web.rest;
 
 import emsi.iir4.pathogene.domain.Detection;
-import emsi.iir4.pathogene.domain.Unclassified;
 import emsi.iir4.pathogene.repository.DetectionRepository;
 import emsi.iir4.pathogene.repository.UnclassifiedRepository;
 import emsi.iir4.pathogene.web.rest.errors.BadRequestAlertException;
@@ -40,7 +39,6 @@ public class DetectionResource {
     private String applicationName;
 
     private final DetectionRepository detectionRepository;
-
     private final MqController mqController;
 
     private final UnclassifiedResource unclassifiedResource;
@@ -59,6 +57,7 @@ public class DetectionResource {
         this.unclassifiedRepository = unclassifiedRepository;
     }
 
+
     /**
      * {@code POST  /detections} : Create a new detection.
      *
@@ -72,7 +71,7 @@ public class DetectionResource {
         if (detection.getId() != null) {
             throw new BadRequestAlertException("A new detection cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        //     Unclassified unclassified = new Unclassified()
+               //     Unclassified unclassified = new Unclassified()
         //         .photo(detection.getPhoto())
         //         .photoContentType(detection.getPhotoContentType()).code("DET-"+UUID.randomUUID().toString());
         //   //  unclassified = unclassifiedResource.createUnclassified(unclassified).getBody();
@@ -85,7 +84,6 @@ public class DetectionResource {
         detection.setStade(stade);
         detection.setCode("DET-" + UUID.randomUUID().toString());
         Detection result = detectionRepository.save(detection);
-
         return ResponseEntity
             .created(new URI("/api/detections/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -192,11 +190,15 @@ public class DetectionResource {
     /**
      * {@code GET  /detections} : get all the detections.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of detections in body.
      */
     @GetMapping("/detections")
-    public List<Detection> getAllDetections(@RequestParam(required = false) String filter) {
+    public List<Detection> getAllDetections(
+        @RequestParam(required = false) String filter,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
         if ("visite-is-null".equals(filter)) {
             log.debug("REST request to get all Detections where visite is null");
             return StreamSupport
@@ -205,7 +207,7 @@ public class DetectionResource {
                 .collect(Collectors.toList());
         }
         log.debug("REST request to get all Detections");
-        return detectionRepository.findAll();
+        return detectionRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -217,7 +219,7 @@ public class DetectionResource {
     @GetMapping("/detections/{id}")
     public ResponseEntity<Detection> getDetection(@PathVariable Long id) {
         log.debug("REST request to get Detection : {}", id);
-        Optional<Detection> detection = detectionRepository.findById(id);
+        Optional<Detection> detection = detectionRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(detection);
     }
 

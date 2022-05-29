@@ -11,13 +11,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -47,13 +47,12 @@ public class PatientResource {
         this.accountResource = accountResource;
     }
 
+
     /**
      * {@code POST  /patients} : Create a new patient.
      *
      * @param patient the patient to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
-     *         body the new patient, or with status {@code 400 (Bad Request)} if the
-     *         patient has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new patient, or with status {@code 400 (Bad Request)} if the patient has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/patients")
@@ -62,8 +61,8 @@ public class PatientResource {
         if (patient.getId() != null) {
             throw new BadRequestAlertException("A new patient cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
         patient.setCode("PAT-" + UUID.randomUUID().toString());
+
         Patient result = patientRepository.save(patient);
         return ResponseEntity
             .created(new URI("/api/patients/" + result.getId()))
@@ -74,13 +73,11 @@ public class PatientResource {
     /**
      * {@code PUT  /patients/:id} : Updates an existing patient.
      *
-     * @param id      the id of the patient to save.
+     * @param id the id of the patient to save.
      * @param patient the patient to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
-     *         the updated patient,
-     *         or with status {@code 400 (Bad Request)} if the patient is not valid,
-     *         or with status {@code 500 (Internal Server Error)} if the patient
-     *         couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated patient,
+     * or with status {@code 400 (Bad Request)} if the patient is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the patient couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/patients/{id}")
@@ -108,17 +105,14 @@ public class PatientResource {
     }
 
     /**
-     * {@code PATCH  /patients/:id} : Partial updates given fields of an existing
-     * patient, field will ignore if it is null
+     * {@code PATCH  /patients/:id} : Partial updates given fields of an existing patient, field will ignore if it is null
      *
-     * @param id      the id of the patient to save.
+     * @param id the id of the patient to save.
      * @param patient the patient to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
-     *         the updated patient,
-     *         or with status {@code 400 (Bad Request)} if the patient is not valid,
-     *         or with status {@code 404 (Not Found)} if the patient is not found,
-     *         or with status {@code 500 (Internal Server Error)} if the patient
-     *         couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated patient,
+     * or with status {@code 400 (Bad Request)} if the patient is not valid,
+     * or with status {@code 404 (Not Found)} if the patient is not found,
+     * or with status {@code 500 (Internal Server Error)} if the patient couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/patients/{id}", consumes = { "application/json", "application/merge-patch+json" })
@@ -188,8 +182,8 @@ public class PatientResource {
     /**
      * {@code GET  /patients} : get all the patients.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
-     *         of patients in body.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of patients in body.
      */
     @GetMapping("/patients")
     public List<Patient> getAllPatients() {
@@ -212,13 +206,12 @@ public class PatientResource {
      * {@code GET  /patients/:id} : get the "id" patient.
      *
      * @param id the id of the patient to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
-     *         the patient, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the patient, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/patients/{id}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         log.debug("REST request to get Patient : {}", id);
-        Optional<Patient> patient = patientRepository.findById(id);
+        Optional<Patient> patient = patientRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(patient);
     }
 

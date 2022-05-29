@@ -93,8 +93,9 @@ relationship OneToMany {
   Medecin{rendezVous} to RendezVous{medecin}
   Maladie{stade} to Stade{maladie}
   Maladie{unclassified} to Unclassified{maladie}
+  Maladie{detection} to  Detection{maladie}
+
 }
 relationship ManyToMany {
   Patient{detection} to Detection{patient}
-  Detection{maladie} to Maladie{detection}
 }
