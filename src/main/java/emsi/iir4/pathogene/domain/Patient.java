@@ -70,13 +70,13 @@ public class Patient implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<RendezVous> rendezVous = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_patient__detection",
         joinColumns = @JoinColumn(name = "patient_id"),
         inverseJoinColumns = @JoinColumn(name = "detection_id")
     )
-    @JsonIgnoreProperties(value = { "maladies", "visite", "patients" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "patients" }, allowSetters = true)
     private Set<Detection> detections = new HashSet<>();
 
     @ManyToOne
