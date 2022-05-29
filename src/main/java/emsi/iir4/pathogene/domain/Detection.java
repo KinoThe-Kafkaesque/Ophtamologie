@@ -44,21 +44,16 @@ public class Detection implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-        name = "rel_detection__maladie",
-        joinColumns = @JoinColumn(name = "detection_id"),
-        inverseJoinColumns = @JoinColumn(name = "maladie_id")
-    )
-    @JsonIgnoreProperties(value = { "stades", "unclassifieds", "detections" }, allowSetters = true)
-    private Set<Maladie> maladies = new HashSet<>();
-
     @JsonIgnoreProperties(value = { "rendezVous", "detection" }, allowSetters = true)
     @OneToOne(mappedBy = "detection")
     private Visite visite;
 
-    @ManyToMany(mappedBy = "detections")
-    @JsonIgnoreProperties(value = { "user", "rendezVous", "detections", "secretaire", "stade" }, allowSetters = true)
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "stades", "unclassifieds", "detections" }, allowSetters = true)
+    private Maladie maladie;
+
+    @OneToMany(mappedBy = "detections", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "user", "rendezVous", "detections", "secretaire" }, allowSetters = true)
     private Set<Patient> patients = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -167,31 +162,6 @@ public class Detection implements Serializable {
         this.description = description;
     }
 
-    public Set<Maladie> getMaladies() {
-        return this.maladies;
-    }
-
-    public void setMaladies(Set<Maladie> maladies) {
-        this.maladies = maladies;
-    }
-
-    public Detection maladies(Set<Maladie> maladies) {
-        this.setMaladies(maladies);
-        return this;
-    }
-
-    public Detection addMaladie(Maladie maladie) {
-        this.maladies.add(maladie);
-        maladie.getDetections().add(this);
-        return this;
-    }
-
-    public Detection removeMaladie(Maladie maladie) {
-        this.maladies.remove(maladie);
-        maladie.getDetections().remove(this);
-        return this;
-    }
-
     public Visite getVisite() {
         return this.visite;
     }
@@ -208,6 +178,19 @@ public class Detection implements Serializable {
 
     public Detection visite(Visite visite) {
         this.setVisite(visite);
+        return this;
+    }
+
+    public Maladie getMaladie() {
+        return this.maladie;
+    }
+
+    public void setMaladie(Maladie maladie) {
+        this.maladie = maladie;
+    }
+
+    public Detection maladie(Maladie maladie) {
+        this.setMaladie(maladie);
         return this;
     }
 

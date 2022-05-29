@@ -28,7 +28,6 @@ public class Maladie implements Serializable {
 
     @Column(name = "nom", unique = true)
     private String nom;
-
     @OneToMany(mappedBy = "maladie", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<Stade> stades = new HashSet<>();
@@ -37,9 +36,9 @@ public class Maladie implements Serializable {
     @JsonIgnoreProperties(value = { "classifications", "maladie" }, allowSetters = true)
     private Set<Unclassified> unclassifieds = new HashSet<>();
 
-    @ManyToMany(mappedBy = "maladies")
-    @JsonIgnoreProperties(value = { "maladies", "visite", "patients" }, allowSetters = true)
-    private Set<Detection> detections = new HashSet<>();
+    @OneToMany(mappedBy = "maladie", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "maladie" }, allowSetters = true)
+     private Set<Detection> detections = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -150,10 +149,10 @@ public class Maladie implements Serializable {
 
     public void setDetections(Set<Detection> detections) {
         if (this.detections != null) {
-            this.detections.forEach(i -> i.removeMaladie(this));
+            this.detections.forEach(i -> i.setMaladie(null));
         }
         if (detections != null) {
-            detections.forEach(i -> i.addMaladie(this));
+            detections.forEach(i -> i.setMaladie(this));
         }
         this.detections = detections;
     }
@@ -165,13 +164,13 @@ public class Maladie implements Serializable {
 
     public Maladie addDetection(Detection detection) {
         this.detections.add(detection);
-        detection.getMaladies().add(this);
+        detection.setMaladie(this);
         return this;
     }
 
     public Maladie removeDetection(Detection detection) {
         this.detections.remove(detection);
-        detection.getMaladies().remove(this);
+        detection.setMaladie(null);
         return this;
     }
 

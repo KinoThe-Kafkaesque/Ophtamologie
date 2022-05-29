@@ -38,9 +38,8 @@
     {
       "otherEntityName": "detection",
       "otherEntityRelationshipName": "maladie",
-      "ownerSide": false,
       "relationshipName": "detection",
-      "relationshipType": "many-to-many"
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "no",

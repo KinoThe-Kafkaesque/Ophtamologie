@@ -40,18 +40,17 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityName": "maladie",
-      "otherEntityRelationshipName": "detection",
-      "ownerSide": true,
-      "relationshipName": "maladie",
-      "relationshipType": "many-to-many"
-    },
-    {
       "otherEntityName": "visite",
       "otherEntityRelationshipName": "detection",
       "ownerSide": false,
       "relationshipName": "visite",
       "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "maladie",
+      "otherEntityRelationshipName": "detection",
+      "relationshipName": "maladie",
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "patient",
