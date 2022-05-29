@@ -47,7 +47,6 @@ public class PatientResource {
         this.accountResource = accountResource;
     }
 
-
     /**
      * {@code POST  /patients} : Create a new patient.
      *
@@ -156,9 +155,6 @@ public class PatientResource {
                 if (patient.getTelephone() != null) {
                     existingPatient.setTelephone(patient.getTelephone());
                 }
-                if (patient.getPoids() != null) {
-                    existingPatient.setPoids(patient.getPoids());
-                }
                 if (patient.getTaille() != null) {
                     existingPatient.setTaille(patient.getTaille());
                 }
@@ -182,7 +178,6 @@ public class PatientResource {
     /**
      * {@code GET  /patients} : get all the patients.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of patients in body.
      */
     @GetMapping("/patients")
@@ -211,7 +206,7 @@ public class PatientResource {
     @GetMapping("/patients/{id}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         log.debug("REST request to get Patient : {}", id);
-        Optional<Patient> patient = patientRepository.findOneWithEagerRelationships(id);
+        Optional<Patient> patient = patientRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(patient);
     }
 

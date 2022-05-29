@@ -47,6 +47,6 @@
     }
   ],
   "service": "no",
-
-  "skipServer": true
+  "skipClient": true,
+  "skipServer": false
 }

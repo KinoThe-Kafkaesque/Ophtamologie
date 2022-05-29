@@ -187,5 +187,4 @@ export default class DetectionUpdate extends mixins(JhiDataUtils) {
   public closeDialog(): void {
     (<any>this.$refs.afficheEntity).hide();
   }
-
 }

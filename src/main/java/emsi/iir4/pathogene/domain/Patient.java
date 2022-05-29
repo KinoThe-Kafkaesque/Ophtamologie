@@ -46,7 +46,6 @@ public class Patient implements Serializable {
 
     @Column(name = "telephone")
     private String telephone;
-
     @Column(name = "poids")
     private Double poids;
 
@@ -65,24 +64,17 @@ public class Patient implements Serializable {
     @JoinColumn(unique = true)
     private User user;
 
-
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<RendezVous> rendezVous = new HashSet<>();
 
-    @ManyToMany( fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "rel_patient__detection",
-        joinColumns = @JoinColumn(name = "patient_id"),
-        inverseJoinColumns = @JoinColumn(name = "detection_id")
-    )
-    @JsonIgnoreProperties(value = { "patients" }, allowSetters = true)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {  "patient" }, allowSetters = true)
     private Set<Detection> detections = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "user", "medecins", "patients" }, allowSetters = true)
     private Secretaire secretaire;
-
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "patients", "classifications", "images" }, allowSetters = true)
@@ -194,19 +186,6 @@ public class Patient implements Serializable {
         this.telephone = telephone;
     }
 
-    public Double getPoids() {
-        return this.poids;
-    }
-
-    public Patient poids(Double poids) {
-        this.setPoids(poids);
-        return this;
-    }
-
-    public void setPoids(Double poids) {
-        this.poids = poids;
-    }
-
     public Double getTaille() {
         return this.taille;
     }
@@ -295,6 +274,12 @@ public class Patient implements Serializable {
     }
 
     public void setDetections(Set<Detection> detections) {
+        if (this.detections != null) {
+            this.detections.forEach(i -> i.setPatient(null));
+        }
+        if (detections != null) {
+            detections.forEach(i -> i.setPatient(this));
+        }
         this.detections = detections;
     }
 
@@ -305,13 +290,13 @@ public class Patient implements Serializable {
 
     public Patient addDetection(Detection detection) {
         this.detections.add(detection);
-        detection.getPatients().add(this);
+        detection.setPatient(this);
         return this;
     }
 
     public Patient removeDetection(Detection detection) {
         this.detections.remove(detection);
-        detection.getPatients().remove(this);
+        detection.setPatient(null);
         return this;
     }
 
@@ -372,7 +357,6 @@ public class Patient implements Serializable {
             ", adresse='" + getAdresse() + "'" +
             ", genre='" + getGenre() + "'" +
             ", telephone='" + getTelephone() + "'" +
-            ", poids=" + getPoids() +
             ", taille=" + getTaille() +
             ", photo='" + getPhoto() + "'" +
             ", photoContentType='" + getPhotoContentType() + "'" +

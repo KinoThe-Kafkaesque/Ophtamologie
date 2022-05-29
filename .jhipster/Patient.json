@@ -68,9 +68,8 @@
     {
       "otherEntityName": "detection",
       "otherEntityRelationshipName": "patient",
-      "ownerSide": true,
       "relationshipName": "detection",
-      "relationshipType": "many-to-many"
+      "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "secretaire",
@@ -86,6 +85,6 @@
     }
   ],
   "service": "no",
-
-  "skipServer": true
+  "skipClient": true,
+  "skipServer": false
 }

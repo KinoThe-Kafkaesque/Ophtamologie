@@ -55,12 +55,11 @@
     {
       "otherEntityName": "patient",
       "otherEntityRelationshipName": "detection",
-      "ownerSide": false,
       "relationshipName": "patient",
-      "relationshipType": "many-to-many"
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "no",
-
-  "skipServer": true
+  "skipClient": true,
+  "skipServer": false
 }

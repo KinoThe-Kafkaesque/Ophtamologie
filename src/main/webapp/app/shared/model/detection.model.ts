@@ -13,7 +13,7 @@ export interface IDetection {
   description?: string | null;
   visite?: IVisite | null;
   maladie?: IMaladie | null;
-  patients?: IPatient[] | null;
+  patient?: IPatient | null;
 }
 
 export class Detection implements IDetection {
@@ -28,7 +28,7 @@ export class Detection implements IDetection {
     public description?: string | null,
     public visite?: IVisite | null,
     public maladie?: IMaladie | null,
-    public patients?: IPatient[] | null
+    public patient?: IPatient | null
   ) {
     this.validation = this.validation ?? false;
   }

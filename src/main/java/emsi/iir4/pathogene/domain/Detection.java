@@ -3,8 +3,6 @@ package emsi.iir4.pathogene.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -49,12 +47,12 @@ public class Detection implements Serializable {
     private Visite visite;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "stades", "unclassifieds", "detections" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "detections", "stades", "unclassifieds" }, allowSetters = true)
     private Maladie maladie;
 
-    @OneToMany(mappedBy = "detections", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "user", "rendezVous", "detections", "secretaire" }, allowSetters = true)
-    private Set<Patient> patients = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties(value = {  "rendezVous", "detections", "secretaire" }, allowSetters = true)
+    private Patient patient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -194,34 +192,16 @@ public class Detection implements Serializable {
         return this;
     }
 
-    public Set<Patient> getPatients() {
-        return this.patients;
+    public Patient getPatient() {
+        return this.patient;
     }
 
-    public void setPatients(Set<Patient> patients) {
-        if (this.patients != null) {
-            this.patients.forEach(i -> i.removeDetection(this));
-        }
-        if (patients != null) {
-            patients.forEach(i -> i.addDetection(this));
-        }
-        this.patients = patients;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Detection patients(Set<Patient> patients) {
-        this.setPatients(patients);
-        return this;
-    }
-
-    public Detection addPatient(Patient patient) {
-        this.patients.add(patient);
-        patient.getDetections().add(this);
-        return this;
-    }
-
-    public Detection removePatient(Patient patient) {
-        this.patients.remove(patient);
-        patient.getDetections().remove(this);
+    public Detection patient(Patient patient) {
+        this.setPatient(patient);
         return this;
     }
 
