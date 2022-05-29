@@ -1,0 +1,100 @@
+
+entity Classification {
+  code String unique
+  score Boolean
+}
+entity Detection {
+  photo ImageBlob
+  code String unique
+  validation Boolean
+  stade String
+  date ZonedDateTime
+  description String
+}
+entity Image {
+  code String unique
+  photo ImageBlob
+}
+entity Maladie {
+  code String unique
+  nom String unique
+}
+entity Medecin {
+  code String unique
+  nom String
+  numEmp String
+  prenom String
+  expertLevel Integer
+  photo ImageBlob
+  type String
+  nbrPatients Integer
+  rating Integer
+  description TextBlob
+}
+entity Patient {
+  code String unique
+  nom String
+  prenom String
+  dateNaissance LocalDate
+  adresse String
+  genre Genre
+  telephone String
+  poids Double
+  taille Double
+  photo ImageBlob
+}
+entity RendezVous {
+  date ZonedDateTime
+  code String unique
+  status String
+}
+entity Secretaire {
+  code String unique
+  nom String
+  numEmp String
+  prenom String
+  admin Boolean
+  photo ImageBlob
+}
+entity Stade {
+  code String unique
+  level String
+  description String
+}
+entity Unclassified {
+  code String unique
+  photo ImageBlob
+}
+entity Visite {
+  code String unique
+  date LocalDate
+}
+enum Genre {
+  Homme,
+  Femme
+}
+
+relationship OneToOne {
+  Medecin{user} to User
+  Patient{user} to User
+  Secretaire{user} to User
+  Visite{rendezVous} to RendezVous{visite}
+  Visite{detection} to Detection{visite}
+}
+relationship OneToMany {
+  Medecin{classification} to Classification{medecin}
+  Stade{classification} to Classification{stade}
+  Unclassified{classification} to Classification{unclassified}
+  Stade{image} to Image{stade}
+  Secretaire{medecin} to Medecin{secretaire}
+  Secretaire{patient} to Patient{secretaire}
+  Stade{patient} to Patient{stade}
+  Patient{rendezVous} to RendezVous{patient}
+  Medecin{rendezVous} to RendezVous{medecin}
+  Maladie{stade} to Stade{maladie}
+  Maladie{unclassified} to Unclassified{maladie}
+}
+relationship ManyToMany {
+  Patient{detection} to Detection{patient}
+  Detection{maladie} to Maladie{detection}
+}

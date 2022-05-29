@@ -27,6 +27,13 @@
   "readOnly": false,
   "relationships": [
     {
+      "otherEntityName": "visite",
+      "otherEntityRelationshipName": "rendezVous",
+      "ownerSide": false,
+      "relationshipName": "visite",
+      "relationshipType": "one-to-one"
+    },
+    {
       "otherEntityName": "patient",
       "otherEntityRelationshipName": "rendezVous",
       "relationshipName": "patient",
@@ -37,13 +44,6 @@
       "otherEntityRelationshipName": "rendezVous",
       "relationshipName": "medecin",
       "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "visite",
-      "otherEntityRelationshipName": "rendezVous",
-      "ownerSide": false,
-      "relationshipName": "visite",
-      "relationshipType": "one-to-one"
     }
   ],
   "service": "no",

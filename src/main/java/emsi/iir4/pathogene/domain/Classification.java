@@ -26,15 +26,15 @@ public class Classification implements Serializable {
     private Boolean score;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "secretaire", "rendezVous", "classifications" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "classifications", "rendezVous", "secretaire" }, allowSetters = true)
     private Medecin medecin;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "maladie", "patients", "classifications", "images" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "classifications", "images", "patients", "maladie" }, allowSetters = true)
     private Stade stade;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "maladie", "classifications" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "classifications", "maladie" }, allowSetters = true)
     private Unclassified unclassified;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

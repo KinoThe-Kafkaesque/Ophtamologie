@@ -64,10 +64,10 @@
       "relationshipType": "one-to-one"
     },
     {
-      "otherEntityName": "secretaire",
+      "otherEntityName": "classification",
       "otherEntityRelationshipName": "medecin",
-      "relationshipName": "secretaire",
-      "relationshipType": "many-to-one"
+      "relationshipName": "classification",
+      "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "rendezVous",
@@ -76,10 +76,10 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "classification",
+      "otherEntityName": "secretaire",
       "otherEntityRelationshipName": "medecin",
-      "relationshipName": "classification",
-      "relationshipType": "one-to-many"
+      "relationshipName": "secretaire",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "no",

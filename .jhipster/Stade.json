@@ -27,18 +27,6 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityName": "maladie",
-      "otherEntityRelationshipName": "stade",
-      "relationshipName": "maladie",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "patient",
-      "otherEntityRelationshipName": "stade",
-      "relationshipName": "patient",
-      "relationshipType": "one-to-many"
-    },
-    {
       "otherEntityName": "classification",
       "otherEntityRelationshipName": "stade",
       "relationshipName": "classification",
@@ -49,6 +37,18 @@
       "otherEntityRelationshipName": "stade",
       "relationshipName": "image",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "stade",
+      "relationshipName": "patient",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "maladie",
+      "otherEntityRelationshipName": "stade",
+      "relationshipName": "maladie",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "no",

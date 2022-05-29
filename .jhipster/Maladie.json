@@ -24,13 +24,6 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityName": "detection",
-      "otherEntityRelationshipName": "maladie",
-      "ownerSide": false,
-      "relationshipName": "detection",
-      "relationshipType": "one-to-one"
-    },
-    {
       "otherEntityName": "stade",
       "otherEntityRelationshipName": "maladie",
       "relationshipName": "stade",
@@ -41,6 +34,13 @@
       "otherEntityRelationshipName": "maladie",
       "relationshipName": "unclassified",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "detection",
+      "otherEntityRelationshipName": "maladie",
+      "ownerSide": false,
+      "relationshipName": "detection",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "no",

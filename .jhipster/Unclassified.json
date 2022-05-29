@@ -24,16 +24,16 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityName": "maladie",
-      "otherEntityRelationshipName": "unclassified",
-      "relationshipName": "maladie",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityName": "classification",
       "otherEntityRelationshipName": "unclassified",
       "relationshipName": "classification",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "maladie",
+      "otherEntityRelationshipName": "unclassified",
+      "relationshipName": "maladie",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "no",

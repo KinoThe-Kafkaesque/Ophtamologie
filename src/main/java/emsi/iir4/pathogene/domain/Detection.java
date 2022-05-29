@@ -3,6 +3,8 @@ package emsi.iir4.pathogene.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -42,18 +44,22 @@ public class Detection implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnoreProperties(value = { "detection", "stades", "unclassifieds" }, allowSetters = true)
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Maladie maladie;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "secretaire", "stade", "detections", "rendezVous" }, allowSetters = true)
-    private Patient patient;
+    @ManyToMany
+    @JoinTable(
+        name = "rel_detection__maladie",
+        joinColumns = @JoinColumn(name = "detection_id"),
+        inverseJoinColumns = @JoinColumn(name = "maladie_id")
+    )
+    @JsonIgnoreProperties(value = { "stades", "unclassifieds", "detections" }, allowSetters = true)
+    private Set<Maladie> maladies = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "rendezVous", "detection" }, allowSetters = true)
     @OneToOne(mappedBy = "detection")
     private Visite visite;
+
+    @ManyToMany(mappedBy = "detections")
+    @JsonIgnoreProperties(value = { "user", "rendezVous", "detections", "secretaire", "stade" }, allowSetters = true)
+    private Set<Patient> patients = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -161,29 +167,28 @@ public class Detection implements Serializable {
         this.description = description;
     }
 
-    public Maladie getMaladie() {
-        return this.maladie;
+    public Set<Maladie> getMaladies() {
+        return this.maladies;
     }
 
-    public void setMaladie(Maladie maladie) {
-        this.maladie = maladie;
+    public void setMaladies(Set<Maladie> maladies) {
+        this.maladies = maladies;
     }
 
-    public Detection maladie(Maladie maladie) {
-        this.setMaladie(maladie);
+    public Detection maladies(Set<Maladie> maladies) {
+        this.setMaladies(maladies);
         return this;
     }
 
-    public Patient getPatient() {
-        return this.patient;
+    public Detection addMaladie(Maladie maladie) {
+        this.maladies.add(maladie);
+        maladie.getDetections().add(this);
+        return this;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Detection patient(Patient patient) {
-        this.setPatient(patient);
+    public Detection removeMaladie(Maladie maladie) {
+        this.maladies.remove(maladie);
+        maladie.getDetections().remove(this);
         return this;
     }
 
@@ -203,6 +208,37 @@ public class Detection implements Serializable {
 
     public Detection visite(Visite visite) {
         this.setVisite(visite);
+        return this;
+    }
+
+    public Set<Patient> getPatients() {
+        return this.patients;
+    }
+
+    public void setPatients(Set<Patient> patients) {
+        if (this.patients != null) {
+            this.patients.forEach(i -> i.removeDetection(this));
+        }
+        if (patients != null) {
+            patients.forEach(i -> i.addDetection(this));
+        }
+        this.patients = patients;
+    }
+
+    public Detection patients(Set<Patient> patients) {
+        this.setPatients(patients);
+        return this;
+    }
+
+    public Detection addPatient(Patient patient) {
+        this.patients.add(patient);
+        patient.getDetections().add(this);
+        return this;
+    }
+
+    public Detection removePatient(Patient patient) {
+        this.patients.remove(patient);
+        patient.getDetections().remove(this);
         return this;
     }
 

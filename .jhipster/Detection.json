@@ -44,13 +44,7 @@
       "otherEntityRelationshipName": "detection",
       "ownerSide": true,
       "relationshipName": "maladie",
-      "relationshipType": "one-to-one"
-    },
-    {
-      "otherEntityName": "patient",
-      "otherEntityRelationshipName": "detection",
-      "relationshipName": "patient",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-many"
     },
     {
       "otherEntityName": "visite",
@@ -58,6 +52,13 @@
       "ownerSide": false,
       "relationshipName": "visite",
       "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "patient",
+      "otherEntityRelationshipName": "detection",
+      "ownerSide": false,
+      "relationshipName": "patient",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "no",

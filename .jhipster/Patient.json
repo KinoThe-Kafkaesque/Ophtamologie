@@ -64,6 +64,19 @@
       "relationshipType": "one-to-one"
     },
     {
+      "otherEntityName": "rendezVous",
+      "otherEntityRelationshipName": "patient",
+      "relationshipName": "rendezVous",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "detection",
+      "otherEntityRelationshipName": "patient",
+      "ownerSide": true,
+      "relationshipName": "detection",
+      "relationshipType": "many-to-many"
+    },
+    {
       "otherEntityName": "secretaire",
       "otherEntityRelationshipName": "patient",
       "relationshipName": "secretaire",
@@ -74,18 +87,6 @@
       "otherEntityRelationshipName": "patient",
       "relationshipName": "stade",
       "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "detection",
-      "otherEntityRelationshipName": "patient",
-      "relationshipName": "detection",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "rendezVous",
-      "otherEntityRelationshipName": "patient",
-      "relationshipName": "rendezVous",
-      "relationshipType": "one-to-many"
     }
   ],
   "service": "no",
